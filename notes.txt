@@ -1,0 +1,428 @@
+#########
+# Step 1
+
+Code affected: none
+
+Created this file.
+
+#########
+# Step 2
+
+Code affected: all .java files
+
+Reformatted using the Google Java style formatter.
+
+#########
+# Step 3
+
+Code affected: Pig.turnAround
+
+Flaw: unnecessary if, leading to duplicate code.
+
+Fix: replaced if statement with a single assignment statement.
+
+#########
+# Step 4
+
+Code affected: ANIMAL_MANURE
+
+Flaw: unused public instance variable ‘d’.
+
+Fix: removed unused public instance variable ‘d’.
+
+#########
+# Step 5
+
+Code affected: ANIMAL_MANURE, Main, Chicken, Pig
+
+Flaw: class name “ANIMAL_MANURE” is inconsistent with project naming and is improper Java style.
+
+Fix: refactored class name to AnimalManure
+
+#########
+# Step 6
+
+Code affected: AnimalManure, Chicken, Pig
+
+Flaw: improper/unclear use of static variable “manure_appearance” in AnimalManure
+
+Fix: removed static variable from AnimalManure; replaced it with a public String “manure_appearance”; refactored references to manure_appearance in Chicken and Pig
+
+#########
+# Step 7 
+
+Code affected: added FarmYardItem.java
+
+Flaw: lots of duplicate fields and methods across classes
+
+Fix: 1/2: added FarmYardItem that can serve as a superclass for AnimalFood, AnimalManure, Chicken, Egg, Human and Pig
+
+#########
+# Step 8
+
+Code affected: FarmYardItem, AnimalFood
+
+Flaw: lots of duplicate/extra fields and methods that AnimalFood could inherit from FarmYardItem; for example, AnimalFood.appearance, AnimalFood.color, AnimalFood.x, AnimalFood.setLocation, AnimalFood.draw can all be inherited from FarmYardItem
+
+Fix: AnimalFood now inherits fields and methods from FarmYardItem; removed AnimalFood.appearance, AnimalFood.color, AnimalFood.x, AnimalFood.y, AnimalFood.setLocation, AnimalFood.drawString and AnimalFood.draw. AnimalFood constructor and “blown” methods use getters and setters specified in FarmYardItem
+
+#########
+# Step 9
+
+Code affected: AnimalManure, Chicken.digest, Pig.clearStomach
+
+Flaw: lots of duplicate/extra fields and methods that AnimalManure could inherit from FarmYardItem
+
+Fix: AnimalManure now inherits fields and methods from FarmYardItem; removed AnimalManure.manure_appearance, AnimalManure.colour, AnimalManure.x, AnimalManure.y, AnimalManure.setLocation, AnimalManure.drawString and AnimalManure.draw. AnimalManure constructor now uses getters and setters specified in FarmYardItem. Pig.clearStomach now uses AnimalManure.setAppearance. Chicken.digest now uses AnimalManure.setAppearance.
+
+#########
+# Step 10
+
+Code affected: AnimalManure
+
+Flaw: forgot to delete extra fields inherited from FarmYardItem in last push (I merely commented them out)
+
+Fix: deleted commented out fields and methods inherited from FarmYardItem
+
+#########
+# Step 11
+
+Code affected: Chicken, FarmYardItem
+
+Flaw: lots of duplicate/extra fields and methods that Chicken could inherit from FarmYardItem
+
+Fix: Chicken now inherits fields and methods from FarmYardItem. Removed Chicken.appearance, Chicken.colour, Chicken.c, Chicken.r, Chicken.setLocation, Chicken.drawString, Chicken.draw. Chicken.r and Chicken.c are inherited from FarmYardItem as x_position and y_position. Added getter for item_appearance in FarmYardItem. Chicken.reverseAppearance now uses FarmYardItem.getAppearance. Chicken.turnAround now uses setAppearance inherited from FarmYardItem. Chicken.move, Chicken.layEgg and Chicken.digest now use setLocation, getPositionX and getPositionY inherited from FarmYardItem.
+
+#########
+# Step 12
+
+Code affected: Egg, Chicken.layEgg, Human.move
+
+Flaw: lots of duplicate/extra fields and methods that Egg could inherit from FarmYardItem
+
+Fix: Egg now inherits fields and methods from FarmYardItem. Removed Egg.eggShape, Egg.x, Egg.y, Egg.setLocation, Egg.draw, Egg.getX. Chicken.layEgg now properly uses Egg.getPositionX and Egg.getPositionY so that eggs appear where they should. Human.move now uses Egg.getPositionX and Egg.getPositionY. Created constructor for Egg that uses setAppearance and setColor inherited from FarmYardItem.
+
+#########
+# Step 13
+
+Code affected: Pig
+
+Flaw: lots of duplicate/extra fields and methods that Pig could inherit from FarmYardItem
+
+Fix: Pig now inherits fields and methods from FarmYardItem. Removed Pig.appearance, Pig.r, Pig.c, Pig.colour, Pig.setLocation, Pig.drawString, Pig.draw. Pig constructor now uses setters and getters specified in FarmYardItem. Pig.reverseAppearance now uses inherited getAppearance method. Pig.turnAround now uses inherited setAppearance method. Pig.move now uses inherited setLocation, getPositionX and getPositionY methods.
+
+#########
+# Step 14
+
+Code affected: Human, FarmYardItem.drawString
+
+Flaw: lots of duplicate/extra fields and methods that Human could inherit from FarmYardItem
+
+Fix: Human now inherits fields and methods from FarmYardItem. Removed Human.appearance, Human.r, Human.c, Human.g, Human.setLocation, Human.drawString. To retain original functionality, added method Human.displayEggs which is called in Human.draw. Human constructor now uses getters and setters specified in FarmYardItem. Human.dropFood now uses setLocation, getPositionX and getPositionY methods inherited from FarmYardItem. Human.reverseAppearance now uses inherited getAppearance method. Human.turnAround now uses inherited setAppearance method. Human.move uses inherited getPositionX, getPositionY and setLocation methods. Human.move no longer displays ‘Dozen!’. FarmYardItem.drawString visibility changed to protected for future fixes.
+
+#########
+# Step 15
+
+Code affected: added FarmYardCreature.java
+
+Flaw: Chicken, Human and Pig share common fields and methods that could be inherited from a superclass; They share the instance variable goingRight. They share the methods move, turnAround and reverseAppearance.
+
+Fix: added the abstract class FarmYardCreature to serve as a superclass for Chicken, Human and Pig. FarmYardCreature has the concrete methods FarmYardCreature.reverseAppearance and FarmYardCreature.turnAround. FarmYardCreature has the abstract method FarmYardCreature.move.
+
+#########
+# Step 16
+
+Code affected: Chicken, Human, Pig
+
+Flaw: Chicken, Human and Pig share common fields and methods that could be inherited from a superclass; They share the instance variable goingRight. They share the methods move, turnAround and reverseAppearance.
+
+Fix: FarmYardCreature inherits from FarmYardItem. Human, Pig and Chicken now inherit methods and fields from FarmYardCreature. They each inherit the concrete methods reverseAppearance and turnAround. They each implement the abstract method move.
+
+#########
+# Step 17
+
+Code affected: Chicken, Human, Pig, FarmYardCreature, FarmYardItem
+
+Flaw: The move methods for Chicken, Human and Pig share a lot of duplicate code; the routines for turning around and walking left and right are nearly identical.
+
+Fix: Added methods FarmYardItem.moveUp, FarmYardItem.moveDown, FarmYardItem.moveLeft and FarmYardItem.moveRight for easier extendability. Added method FarmYardCreature.randomChangeDirectionX which encapsulates some of the duplicated code in Chicken.move, Human.move and Pig.move. Added method FarmYardCreature.walk which encapsulates some more of the duplicated code in Chicken.move and Pig.move. Added instance variable turnAroundFactorX to FarmYardCreature. Added setter for turnAroundFactorX to FarmYardCreature. The constructors for Chicken, Human and Pig now use setTurnAroundFactorX. Chicken.move and Pig.move now use the inherited walk method. Human.move, Chicken.move and Pig.move now use the inherited randomChangeDirectionX method.
+
+#########
+# Step 18
+
+Code affected: Chicken, Human, Pig, FarmYardCreature
+
+Flaw: Human.move contains errors due to bad control flow, poor code organization and duplicate code. In the case that a Human does not have a target Egg, it will only move up (increase its Y position) if it is going right, and only move down if it is going left. The horizontal movement behaviour of Human is also inconsistent with Pig and Chicken.
+
+Fix: Refactored FarmYardCreature.randomChangeDirectionX to be more clearly named FarmYardCreature.randomChangeDirectionHorizontal. Refactored FarmYardCreature.walk to FarmYardCreature.walkHorizontal to be more clear about its function. Refactored FarmYardCreature.turnAround to FarmYardCreature.turnAroundHorizontal. Created methods FarmYardCreature.randomChangeDirectionVertical, FarmYardCreature.turnAroundVertical and FarmYardCreature.verticalWalk. Added instance variables FarmYardCreature.turnAroundFactorY and FarmYardCreature.goingUp and added setter method FarmYardCreature.setTurnAroundFactorY. Replaced all code that runs in Human.move in the case that Human does not have a target Egg with appropriate calls to randomChangeDirectionHorizontal, randomChangeDirectionVertical, walkHorizontal and walkVertical. Human constructor now uses setTurnAroundFactorY and instance variable goingUp. The horizontal and vertical movement behaviours of a Human instance are now independent of each other, and can be modified independently. 
+
+#########
+# Step 19
+
+Code affected: Main; added FarmYard.java
+
+Flaw: Human.myFarmAnimals is an inappropriate place to store an array of game objects. This array should be part of a class whose only responsibility to is handle the positioning (and possibly rendering) of game objects.
+
+Fix: Created a Singleton class called FarmYard which will store FarmYardItems. Added a number of fields to store FarmYardItems in efficient ways. Created methods to initialize and get singleton instance of FarmYard. *Note: there are a number of currently unused methods and fields in FarmYard that will gradually be integrated into the program to solve a number of issues.*
+
+#########
+# Step 20
+
+Code affected: Main, Chicken, FarmYardItem, Human, Pig
+
+Flaw: Human.myFarmAnimals is an inappropriate place to store an array of game objects. This array should be part of a class whose only responsibility to is handle the positioning (and possibly rendering) of game objects.
+
+Fix: Removed Human.myFarmAnimals. Added FarmYard instance field parent_farmyard to FarmYardItem so that all subclasses of FarmYardItem can access FarmYard singleton instance. Changed all cases of ‘Human.myFarmAnimals’ to access FarmYard.farmYard via its singleton instance.
+
+#########
+# Step 21
+
+Code affected: Main, AnimalFood, AnimalManure, Chicken, Egg, FarmYard, FarmYardCreature, FarmYardItem, Human, Pig
+
+Flaw: Methods and routines for setting position of FarmYardItems are inconsistent, confusing and erroneous. Code in Main and Human.dropFood creates discrepancies between FarmYardItem position fields and their placement in FarmYard.farmYard array. Also, FarmYardItems have the tendency to disappear because only one FarmYardItem at a time can occupy an index of FarmYard.farmYard.
+
+Fix: Replaced FarmYard.farmYard with a 2d array of ArrayLists called FarmYard.farmYardItems. Added constructors that can specify position for all descendants of FarmYardItem and FarmYardCreature. Constructors now automatically add FarmYardItems to FarmYard and position them correctly in FarmYard.farmYardItems array. Updated FarmYardItem.setLocation to update a FarmYardItem’s position in FarmYard.farmYardItems array. FarmYardItem.moveUp, moveDown, moveLeft and moveRight now all use updated FarmYardItem.setLocation. * Note: Items stored in FarmYard.farmYardItems currently do not move or display to the screen; FarmYard.farmYard has been kept temporarily *
+
+#########
+# Step 22
+
+Code affected: Main.start, Main.drawShapes
+
+Flaw: Main.start and Main.drawShapes iterate over a nearly sparse array to draw and move FarmYardItems, leading to inefficiency.
+
+Fix: Main.drawShapes now uses FarmYard.drawToGraphicsContext to draw all FarmYardItems to screen. FarmYard.drawToGraphicsContext iteratively displays all FarmYardItems contained in a hash map called farmYard.itemMap. FarmYard.updateGame also iterates over farmYard.itemMap to move all FarmYardItems that are instances of FarmYardCreature. 
+
+#########
+# Step 23
+
+Code affected: Main.start, Chicken, Pig, FarmYard
+
+Flaw: FarmYardItems are inconsistently stored in FarmYard; both FarmYard.farmYardItems and FarmYard.farmYard store the cursor (x,y) position of FarmYardItems.
+
+Fix: Removed FarmYard.farmYard. Removed all cases from Main where FarmYardItems are stored in FarmYard.farmYard. Updated Chicken.layEgg and Chicken.digest to use FarmYardItem constructors to set AnimalManure positions. Updated Pig.clearStomach to use FarmYardItem constructors to set AnimalManure positions. * Temporarily disabled Chicken.aneggishere; it will always return null *
+
+#########
+# Step 24
+
+Code affected: 
+
+Flaw: Chicken.aneggishere is an inappropriate place for statically accessing the location of an Egg: Chicken class should not be responsible for the location of Eggs. Chicken.aneggishere is also currently broken.
+
+Fix: Removed Chicken.aneggishere. Added a number of more general position-querying functions to FarmYard; added FarmYard.getClosestItemInSet, added FarmYard.getClosestItemOfType and added helper method FarmYard.distanceBetweenItems. Replaced call to Chicken.aneggishere with call to Human.parent_farmyard.closestItemOfType. Human instances will now acquire the closest Egg as their target Egg. Constructed a few test Eggs in Main to test this functionality.
+
+#########
+# Step 25
+
+Code affected: Human.move, FarmYard, Main
+
+Flaw: Human’s don’t/can’t pick up Eggs. Firstly, Eggs are not removed from the game/play area when they are picked up. Secondly, Human’s will move away from Eggs if they share the same x or y coordinate with the Egg. This makes the Human get ‘stuck’ trying to pick up an Egg.
+
+Fix: Human.move now makes call to Human.parent_farmyard.removeFarmYardItem to remove Eggs from FarmYard.farmYardItems. Specified correct if statements in Human.move so that Human’s only move toward target Eggs. Updated FarmYard.getClosestItemInSet to handle cases where there are no items in specified set.
+
+#########
+# Step 26
+
+Code affected: added FarmYardCreature.target, added FarmYardCreature.moveTowardItem, added FarmYardCreature.acquireTargetItem, added FarmYardItem.isHere, added FarmYard.itemExists; removed Human.target. edited Human.move, FarmYard, Main.start, Chicken.move.
+
+Flaw: Chicken’s don’t move toward and eat food. 
+
+Fix: Human.move and Chicken.move now use FarmYardItem.isHere, FarmYard.itemExists and FarmYardCreature.moveTowardItem. Now all FarmYardCreatures can have target items. Now all FarmYardCreatures can move toward and pick up FarmYardItems. They can also check whether a specified item is at their current position. 
+
+#########
+# Step 27
+
+Code affected: added FarmYardAnimal.java; edited Chicken.move, Pig.move; removed Pig.clearStomach, removed Chicken.digest.
+
+Flaw: Pig and Chicken share nearly duplicate methods Pig.clearStomach and Chicken.digest which each return an used boolean value.
+
+Fix: Created FarmYardAnimal subclass of FarmYardCreature. FarmYardAnimal has methods FarmYardAnimal.defecate and FarmYardAnimal.setPoopAppearance. Pig and Chicken are now subclasses of FarmYardAnimal and use defecate method. The constructor for Pig now uses setPoopAppearance.
+
+#########
+# Step 28
+
+Code affected: Changed FarmYardCreature.move, Chicken.move, Human.move; added field FarmYardCreature.walksVertical, added field FarmYardCreature.walksHorizontal, added field FarmYardCreature.target_type. Added methods FarmYardCreature.setTargetType, FarmYardCreature.setWalksVertical and FarmYardCreature.setWalksHorizontal; added FarmYardAnimal.move; edited constructors for Human, FarmYardAnimal, Chicken and Pig. removed Pig.move.
+
+Flaw: Human, Chicken, Pig and Human move methods share a lot of duplicate code; the routines for handling walking, movement and acquisition of target FarmYardItems are nearly identical.
+
+Fix: FarmYardCreature.move is no longer abstract. FarmYardCreature.move handles walking, movement and acquisition of target FarmYardItems; Human, Chicken and Pig inherit this. FarmYardAnimal.move overrides FarmYardCreature.move and handles FarmYardAnimal defecation. Human.move overrides FarmYardCreature.move to handle dropping of food. Human.acquireTargetItem overrides FarmYardCreature.acquireTargetItem so that Human can pick up Eggs. 
+
+#########
+# Step 29
+
+Code affected: added abstract method FarmYardItem.setupItem; edited constructors of FarmYardItem and all its descendants. 
+
+Flaw: Constructors for Human, Chicken, Pig, AnimalFood, Egg and AnimalManure have lots of duplicate code.
+
+Fix: Created abstract method FarmYardItem.setupItem that is called in the overriden constructor of any FarmYardItem. Moved all construction routines for descendants of FarmYardItem to their implemented setupItem method.
+
+#########
+# Step 30
+
+Code affected: removed AnimalFood.blownUp, AnimalFood.blownDown, AnimalFood.blownLeft, AnimalFood.blownRight, AnimalFood.d
+
+Flaw: Unused methods and fields in AnimalFood
+
+Fix: Removed unused methods and fields. 
+
+#########
+# Step 31
+
+Code affected: removed AnimalFood.test, AnimalFood.setupItem
+
+Flaw: Inappropriate and unnecessary use of static field
+
+Fix: Removed static field. Updated AnimalFood.setupItem where AnimalFood.test was used as an argument.
+
+#########
+# Step 32
+
+Code affected: added AnimalFood.move, changed FarmYard.updateGame, added FarmYardItem.move
+
+Flaw: AnimalFood instances are not blown around on the play field.
+
+Fix: Added empty move method to FarmYardItem. Changed FarmYard.updateGame to call move on every FarmYardItem. Created AnimalFood.move method which calls Wind.windBlowingUp and Wind.windBlowingLeft.
+
+#########
+# Step 33
+
+Code affected: Chicken, edited FarmYardAnimal.move, added FarmYard.acquireTargetItem, edited FarmYard.updateGame, added FarmYardAnimal.food_eaten
+
+Flaw: Animals should only poop once per food eaten. They currently poop regardless of whether they have eaten.
+
+Fix: Added counter instance variable FarmYardAnimal.food_eaten. Now FarmYardAnimals will only defecate if they have eaten enough food. * Also fixed concurrent modification in FarmYard.updateGame that cropped up in fixing this issue *
+
+#########
+# Step 34
+
+Code affected: edited Main, Main.start; edited FarmYard.createInstance, edited FarmYard constructor, added FarmYard.cell_height, FarmYard.cell_width, FarmYard.getCellWidth and FarmYard.getCellHeight; edited FarmYardItem.item_width and FarmYardItem.item_height, edited FarmYardItem.drawString
+
+Flaw: The play field (2d array in FarmYard) does not extend to the whole frame window.
+
+Fix: Changed FarmYard constructor and FarmYard.getInstance to take the dimensions of the graphics context as arguments. The cell width and cell height of a cell in the array are calculated by dividing the width and height of the graphics context by the desired width and height divisions. These values are assigned as FarmYardItem.item_width and FarmYardItem.item_height in FarmYardItem.
+
+#########
+# Step 35
+
+Code affected: removed Human.draw, edited Human.acquireTargetItem, added static variable Human.total_eggs_collected, added Human.displayEggsCollected, edited FarmYard.updateGame
+
+Flaw: There is a bug in the displaying of number of eggs collected when there are multiple humans: the text displaying number of eggs collected (for each human) overlaps and is unreadable.
+
+Fix: The eggs message displayed now displays the total number of eggs collected by all humans. FarmYard.updateGame renders the number of eggs collected by all Humans by calling the static method Human.displayEggsCollected.
+
+#########
+# Step 36
+
+Code affected: removed Human.myBasket and human.thing
+
+Flaw: Unused/unnecessary fields in Human; human.myBasket and human.thing are never accessed.
+
+Fix: Removed unnecessary fields in Human.
+
+#########
+# Step 37
+
+Code affected: removed Wind.lastUp, Wind.lastLeft, Wind.windBlowingUp, Wind.windBlowingLeft, added methods Wind.getWindDirection, Wind.updateWind, Wind.storeLastBlown, Wind.getLastBlownForDirection, and Wind.getWind; add fields Wind.lastVertical, Wind.lastHorizontal and Wind.wind_vector edited AnimalFood.move; edited Main.start
+
+Flaw: Wind was sporadic and behaved in undesirable ways; it tended to change direction too often and was different for each item effected.
+
+Fix: Wind no longer updates per AnimalFood, but is updated in the main game loop using Wind.updateWind. Wind forces are accessed by AnimalFood.move with Wind.getWind. Wind will generally blow in a constant direction even after it stops blowing.
+
+#########
+# Step 38
+
+Code affected: removed unused constructors for AnimalFood, AnimalManure, Chicken, Egg, FarmYardAnimal, FarmYardCreature, FarmYardItem, Human and Pig
+
+Flaw: There were constructors for many subclasses of FarmYardItem that were never used in the program.
+
+Fix: Removed unused constructors. 
+
+#########
+# Step 39
+
+Code affected: added FarmYardCreature.moveRight, added FarmYardCreature.moveLeft; edited FarmYardCreature.setLocation and FarmYardCreature.moveTowardItem; added FarmYard.typeIsAtLocation
+
+Flaw: There were some issues with the movement of FarmYardCreatures : they would bunch up and occupy a single cell of FarmYard and they wouldn’t turn properly when moving toward their target items.
+
+Fix: FarmYardCreature.moveTowardItem now makes appropriate calls to FarmYardItem.moveLeft, FarmYardItem.moveRight, FarmYardItem.moveUp and FarmYardItem.moveDown. Over-Rided FarmYardItem.moveLeft and FarmYardItem.moveRight in FarmYardCreature to turn the creature in the appropriate direction. Before changing location, FarmYardCreature.setLocation now calls FarmYard.typeIsAtLocation to check if a FarmYardCreature occupies a cell.
+
+#########
+# Step 40
+
+Code affected: added field FarmYardCreature.reversedAppearance; added FarmYardCreature.setAppearance and FarmYardCreature.buildReverseAppearance, edited and renamed FarmYardCreature.reverseAppearance to FarmYardCreature.getReversedAppearance; 
+
+Flaw: FarmYardCreature.reverseAppearance was very inefficient for a a number of reasons. Firstly, it should be using a StringBuilder to avoid copying a string at every concatenation. Secondly, a new reversed appearance should be stored once and not created every time a creature reverses direction.
+
+Fix: FarmYardCreature now builds a reversed appearance once when its appearance is initially set. FarmYardCreature.buildReverseAppearance uses a StringBuilder to reverse the string.
+
+#########
+# Step 41
+
+Code affected: added FarmYard.isInsideFarmYard, edited FarmYard.typeIsAtLocation, edited FarmYard.setLocation; edited FarmYardCreature.setLocation (made some minor unrelated personal style changes to Chicken, FarmYardItem, Human, Pig)
+
+Flaw: FarmYardItems moving outside the 2d array play area specified in FarmYard would throw an exception (IndexOutOfBoundsException).
+
+Fix: FarmYard.isInsideFarmYard now provides information about whether a certain item relocation is valid (inside the 2d array FarmYard.farmYardItems). * Note: I also did some unrelated cleaning up between step 40 and 41 which is included in this push; removed some unused methods, for example *
+
+#########
+# Step 42
+
+Code affected: all .java files
+
+Flaw: Method and field access modifiers were improperly used across files. Some methods were also not annotated correctly.
+
+Fix: Updated access modifiers and annotations across all .java files. Also organized methods in order of ascending access modification (private first, public last).
+
+#########
+# Step 43
+
+Code affected: all .java files
+
+Flaw: Inconsistent JavaDocs, comments and naming style; also handled a bunch of yellow markers.
+
+Fix: Updated JavaDocs across all files. Updated naming conventions and made sure that variable names were explicit enough. * This can be considered my finalized JavaDoc before I add an item * *Finalized JavaDocs*
+
+
+# Step 44 (same commit as 43)
+
+Code affected: FarmYard.addFarmYardItem
+
+Flaw: Missing case for adding an item that is outside of play area.
+
+Fix: Items can now only be added to FarmYard if they are inside the play area specified by FarmYard.
+
+————————————————————————————
+Main bugs fixed in past steps:
+- Humans can’t pick up eggs/get stuck picking up eggs. steps 18,24,25,28
+- Animals don’t move toward and eat food. steps 26,28
+- Animals defecate without eating anything, step 33
+- Items disappear from play area. step 21
+- ArrayOutOfBoundsException step 41,44
+- When moving toward items, creatures don’t orient their appearance to their direction. step 39
+
+
+#########
+# Step 45
+
+Code affected: added FarmersField.java, Plant.java and Crop.java. Added animalFeed field to Human. Edited Human.move and Human.acquireTarget.
+
+I added a FarmersField item to the game. A FarmersField basically just initializes an array of Plant items. Plants grow and mature and produce Crops which Humans will now pick up when they are out of “animal feed”. When a Human is out of animal feed, they will stop looking to pick up Eggs and will gather 20 crops. A Human cannot spread AnimalFood until it has acquired Crop items. 
+
+*Note the awesome growing animations on the Plants. Also, the Humans harvesting the Plants looks pretty neat.*
+
+#########
+# Step 45B
+
+Code affected: Human.dropFood, Chicken.layEgg
+
+Flaw: Accidentally forgot to change Human.dropFood method to update the amount of animalFeed a human has.
+
+Fix: Added decrement to animalFeed in Human.dropFood. Also, Chickens drop Eggs slightly less regularly now.
+
+
+
+
+
+
+
+
+
